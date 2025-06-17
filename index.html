@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao diện hình ảnh và video</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 100%;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        .left-side {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        .main-media {
+            flex: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        .main-media img, .main-media video {
+            width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+            transition: opacity 0.5s ease-in-out, transform 0.3s ease-out;
+        }
+
+        .thumbnails {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .thumbnails img, .thumbnails video {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.3s ease;
+            object-fit: cover;
+        }
+
+        .thumbnails img:hover, .thumbnails video:hover {
+            transform: scale(1.1);
+            border-color: #007bff;
+        }
+
+        .right-side {
+            flex: 1;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .accordion-toggle {
+            cursor: pointer;
+            margin-bottom: 10px;
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            border-left: 3px solid #007bff;
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <div class="main-media" id="zoom-container">
+                <img id="display-media" src="https://live.staticflickr.com/65535/54595120278_a2e64b081e_z.jpg" alt="Hình ảnh chính">
+            </div>
+            <div class="thumbnails">
+                <img class="thumbnail" src="https://live.staticflickr.com/65535/54595120278_a2e64b081e_z.jpg" onclick="changeMedia('https://live.staticflickr.com/65535/54595120278_a2e64b081e_z.jpg', 'image')" alt="Thumbnail 1">
+                <img class="thumbnail" src="https://live.staticflickr.com/65535/54595099424_520e93d5d9_z.jpg" onclick="changeMedia('https://live.staticflickr.com/65535/54595099424_520e93d5d9_z.jpg', 'image')" alt="Thumbnail 2">
+                <img class="thumbnail" src="https://live.staticflickr.com/65535/54595099914_c2ebed1a33_z.jpg" onclick="changeMedia('https://live.staticflickr.com/65535/54595099914_c2ebed1a33_z.jpg', 'image')" alt="Thumbnail 3">
+                <img class="thumbnail" src="https://live.staticflickr.com/65535/54595213335_b0e661c859_z.jpg" onclick="changeMedia('https://live.staticflickr.com/65535/54595213335_b0e661c859_z.jpg', 'image')" alt="Thumbnail 4">
+                <img class="thumbnail" src="https://live.staticflickr.com/65535/54595238468_8cfbf23641_w.jpg" onclick="changeMedia('https://live.staticflickr.com/65535/54595238468_8cfbf23641_w.jpg', 'image')" alt="Thumbnail 5">
+                <img class="thumbnail" src="https://live.staticflickr.com/65535/54594145237_70569224d1_w.jpg" onclick="changeMedia('https://live.staticflickr.com/65535/54594145237_70569224d1_w.jpg', 'image')" alt="Thumbnail 6">
+                <img class="thumbnail" src="https://live.staticflickr.com/65535/54595025056_fc21a476eb_w.jpg" onclick="changeMedia('https://live.staticflickr.com/65535/54595025056_fc21a476eb_w.jpg', 'image')" alt="Thumbnail 7">
+                <img class="thumbnail" src="https://live.staticflickr.com/65535/54594145252_0a7c3e313c_w.jpg" onclick="changeMedia('https://live.staticflickr.com/65535/54594145252_0a7c3e313c_w.jpg', 'image')" alt="Thumbnail 8">
+                <video class="thumbnail" src="https://live.staticflickr.com/31337/54595075188_1ca175fe61_z.jpg" onclick="changeMedia('https://live.staticflickr.com/31337/54595075188_1ca175fe61_z.jpg', 'video')" alt="Video Thumbnail"></video>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="accordion-section">
+                <h2 class="accordion-toggle">PRODUCT AND DETAILS</h2>
+                <div class="accordion-content">
+                    <p> -FOR: Summer moves—long-light days, open-air plans, unrushed routines.<br>
+                        -FEEL: Cozy-meets-breezy Heavyweight Terry has a breathable soft looped interior, plus perfect stretch.<br>
+                        -FAVE: Drop-in cargo pockets give you plenty of on-hand storage.<br>
+                        -#646831</p>
+                </div>
+            </div>
+            <div class="accordion-section">
+                <h2 class="accordion-toggle">FABRIC + CARE</h2>
+                <div class="accordion-content">
+                    <p> -86% Cotton/12% Polyester/2%.<br>
+                        -BREATHABLE: Airflow moves easily through the garment.<br>
+                        -ALL-AROUND STRETCH: Provides ultimate comfort and mobility.<br>
+                        -EASY CARE: Just throw in the wash and dry without a second thought.<br>
+                        -Machine wash and dry.<br>
+                        -Imported.</p>
+                </div>
+            </div>
+            <div class="accordion-section">
+                <h2 class="accordion-toggle">FIT AND SIZING</h2>
+                <div class="accordion-content">
+                    <p> -86% Cotton/12% Polyester/2%.<br>
+                        -BREATHABLE: Airflow moves easily through the garment.<br>
+                        -ALL-AROUND STRETCH: Provides ultimate comfort and mobility.<br>
+                        -EASY CARE: Just throw in the wash and dry without a second thought.<br>
+                        -Machine wash and dry.<br>
+                        -Imported.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeMedia(mediaSrc, type) {
+            let mainMediaContainer = document.querySelector('.main-media');
+            mainMediaContainer.innerHTML = ''; 
+
+            if (type === 'image') {
+                let imgElement = document.createElement('img');
+                imgElement.src = mediaSrc;
+                imgElement.id = 'display-media';
+                imgElement.style.opacity = '0';
+                imgElement.onload = () => imgElement.style.opacity = '1';
+                mainMediaContainer.appendChild(imgElement);
+                enableZoomPan(imgElement);
+            } else if (type === 'video') {
+                let videoElement = document.createElement('video');
+                videoElement.src = mediaSrc;
+                videoElement.controls = true;
+                videoElement.autoplay = true;
+                videoElement.id = 'display-media';
+                videoElement.style.opacity = '0';
+                videoElement.onloadeddata = () => videoElement.style.opacity = '1';
+                mainMediaContainer.appendChild(videoElement);
+            }
+        }
+
+        function enableZoomPan(imgElement) {
+            let scale = 1;
+            let originX = 0;
+            let originY = 0;
+            let isDragging = false;
+            let startX, startY;
+
+            imgElement.addEventListener("wheel", (event) => {
+                event.preventDefault();
+                scale += event.deltaY * -0.01;
+                scale = Math.min(Math.max(1, scale), 3);
+                imgElement.style.transform = `scale(${scale})`;
+            });
+
+            imgElement.addEventListener("mousedown", (event) => {
+                isDragging = true;
+                startX = event.clientX - originX;
+                startY = event.clientY - originY;
+                imgElement.style.cursor = "grabbing";
+            });
+
+            imgElement.addEventListener("mousemove", (event) => {
+                if (isDragging) {
+                    originX = event.clientX - startX;
+                    originY = event.clientY - startY;
+                    imgElement.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+                }
+            });
+
+            imgElement.addEventListener("mouseup", () => {
+                isDragging = false;
+                imgElement.style.cursor = "grab";
+            });
+
+            imgElement.addEventListener("mouseleave", () => {
+                isDragging = false;
+                imgElement.style.cursor = "grab";
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const toggles = document.querySelectorAll(".accordion-toggle");
+
+            toggles.forEach(toggle => {
+                toggle.addEventListener("click", () => {
+                    const content = toggle.nextElementSibling;
+                    const isVisible = content.style.display === "block";
+                    content.style.display = isVisible ? "none" : "block";
+                });
+            });
+
+            let mainImage = document.getElementById('display-media');
+            enableZoomPan(mainImage);
+        });
+    </script>
+</body>
+</html>
